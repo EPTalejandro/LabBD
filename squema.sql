@@ -8,14 +8,15 @@ drop table if exists objeto cascade ;
 create table ubicacion(
 	UID UUID DEFAULT gen_random_uuid() PRIMARY KEY ,
 	edificio varchar(100),
-	piso smallint not null,
+	piso varchar(3) not null,
 	zonetype varchar(50) not null,
 	latitud decimal(10,7) not null,
 	longitud decimal(10,7) not null 
 );
 
 create table camara(
-	CID varchar(20) PRIMARY KEY,
+	CID UUID DEFAULT gen_random_uuid() PRIMARY key, 
+	nombre varchar(20) not null,
 	modelo varchar(100) not null,
 	UID UUID,
 	has_night_vision boolean not null DEFAULT false,
@@ -29,7 +30,7 @@ create table evento(
 		conf_level decimal(4,3) not null,
 		posX integer not null,
 		posY integer not null,
-		CID varchar(20),
+		CID UUID,
 		constraint CID foreign key(CID) references camara,
 		ancho integer not null,
 		alto integer not null 
@@ -51,8 +52,9 @@ create table objeto(
 	constraint EID foreign key(EID) references evento,
 	tipo varchar(10) not null,
 	color varchar(50),
+	equipaje varchar(50),
 	vehiculo varchar(20),
 	matricula varchar(20),
-	embedding vector(512)
+	embedding vector(512) null
 );
 
