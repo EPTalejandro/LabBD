@@ -1,7 +1,7 @@
 import csv
 import psycopg2 
 def limpia(valor):
-    if valor == "":
+    if valor.strip() == "":
         return None
     else:
         return valor
@@ -30,7 +30,7 @@ def main():
                 cursor.execute(sql_ubicacion, (limpia(fila['ubicacion_nombre']), limpia(fila['ubicacion_piso']),limpia(fila['ubicacion_tipo_zona']),limpia(fila['ubicacion_latitud']),limpia(fila['ubicacion_longitud'])))
                 id_ubi = cursor.fetchone()[0]
                 
-                if(fila['camara_nombre'] != ""):      
+                if(limpia(fila['camara_nombre']) is not None):      
                     sql_camara = """
                         INSERT INTO camara (nombre,modelo,UID,has_night_vision,estado) 
                         VALUES (%s, %s,%s,%s,%s)
@@ -71,7 +71,6 @@ def main():
                     cursor.execute(sql_objeto, (id_evento,limpia(fila['objeto_tipo']),color,limpia(fila['persona_porta_equipaje']),limpia(fila['vehiculo_tipo']),limpia(fila['vehiculo_matricula']),limpia(fila['objeto_embedding'])))
         
         conexion.commit()
-        print("¡Datos distribuidos y llaves foráneas enlazadas con éxito!")
 
     except Exception as error:
         if 'conexion' in locals():
