@@ -12,7 +12,7 @@ def main():
     config_db = {
         "dbname": "hola",
         "user": "postgres",
-        "password": "",
+        "password": "Ballenita1.P",
         "host": "localhost",
         "port": 5432
     }

@@ -115,7 +115,7 @@ SELECT
     l.zone_type,
     (em.embedding_vec <=> mv.v)                 AS distancia_coseno
 FROM embedding em
-JOIN mi_vector mv ON true
+JOIN reference_vector mv ON true
 JOIN "object"  o  ON em.OID  = o.OID
 JOIN "event"   e  ON o.EID   = e.EID
 JOIN camera    c  ON e.CID   = c.CID
