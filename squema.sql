@@ -17,7 +17,7 @@ create table "location"(
 
 -- COMENTARIOS PARA LA TABLA "location"
 
-COMMENT ON TABLE "location" IS 'Almacena la información de donde se encuentra instalada la cámara.';
+COMMENT ON TABLE "location" IS 'Almacena la información de la ubicación de donde se encuentran instaladas la cámaras.';
 
 COMMENT ON COLUMN "location".uid IS 'Identificador único de la ubicación.';
 COMMENT ON COLUMN "location".name IS 'Nombre o descripción del lugar.';
@@ -39,7 +39,7 @@ create table camera(
 
 -- COMENTARIOS PARA LA TABLA "camera"
 
-COMMENT ON TABLE camera IS 'Contiene las especificaciones de la cámara.';
+COMMENT ON TABLE camera IS 'Contiene las cámaras instaladas y sus especificaciones.';
 
 COMMENT ON COLUMN camera.cid IS 'Identificador único de la cámara.';
 COMMENT ON COLUMN camera.uid IS 'Clave foránea que vincula la cámara con su ubicación correspondiente.';
@@ -63,7 +63,7 @@ create table "event"(
 
 -- COMENTARIOS PARA LA TABLA "event"
 
-COMMENT ON TABLE "event" IS 'Registro de la detección capturada por la cámara dentro de un cuadro delimitado.';
+COMMENT ON TABLE "event" IS 'Registro de la detecciones capturadas por las cámaras dentro de un cuadro delimitado.';
 
 COMMENT ON COLUMN "event".eid IS 'Identificador único del evento detectado.';
 COMMENT ON COLUMN "event".cid IS 'Clave foránea que identifica la cámara que capturó el evento.';
@@ -87,7 +87,7 @@ create table alert(
 
 -- COMENTARIOS PARA LA TABLA "alert"
 
-COMMENT ON TABLE alert IS 'Notificación de seguridad generada a partir de un evento.';
+COMMENT ON TABLE alert IS 'Notificaciones de seguridad generadas a partir de los eventos.';
 
 COMMENT ON COLUMN alert.aid IS 'Identificador único de la alerta.';
 COMMENT ON COLUMN alert.eid IS 'Clave foránea que conecta la alerta con el evento que la generó.';
@@ -117,7 +117,7 @@ create table "object"(
 
 -- COMENTARIOS PARA LA TABLA "object"
 
-COMMENT ON TABLE "object" IS 'Almacena los objetos detectados asociados a un evento específico.';
+COMMENT ON TABLE "object" IS 'Objetos detectados asociados a un evento específico.';
 
 COMMENT ON COLUMN "object".oid IS 'Identificador único del objeto.';
 COMMENT ON COLUMN "object".eid IS 'Clave foránea que referencia al evento en el que se detectó el objeto.';
