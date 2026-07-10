@@ -53,6 +53,6 @@ begin
 	join "event" as e on o.EID = e.EID
 	join camera as c on e.CID = c.CID
 	where (em.embedding_vec <=> rv.v) < threshold and o.OID != ref_id
-	limit max_results
-	
+	limit max_results;
 end;
+$$ language plpgsql;
