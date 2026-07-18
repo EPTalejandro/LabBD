@@ -33,7 +33,7 @@ $$ language plpgsql;
 
 
 create or replace function find_similar_objects(ref_id INT, threshold FLOAT, max_results INT)
-returns table(object_ID UUID, object_type varchar(10), distancia_coseno vector(512), camera_name varchar(20), tiempo timestamptz)
+returns table(object_ID UUID, object_type varchar(10), distancia_coseno float8, camera_name varchar(20), tiempo timestamptz) as $$
 begin
 	return query
 	WITH reference_vector as (
@@ -45,14 +45,17 @@ begin
 	select 
 		o.OID as object_ID,
 		o.object_type, 
-		(em.embedding_vec <=> mv.v) as distancia_coseno
-		c.name as camera_name
+		(em.embedding_vec <=> rv.v) as distancia_coseno,
+		c.name as camera_name,
 		e.eTime as tiempo
 	from "object" as o
-	join reference_vector as rv on true
+	cross join reference_vector as rv 
+	join embedding as em on o.OID = em.OID
 	join "event" as e on o.EID = e.EID
 	join camera as c on e.CID = c.CID
-	where (em.embedding_vec <=> rv.v) < threshold and o.OID != ref_id
+	where 	(em.embedding_vec <=> rv.v) <= threshold and o.OID != ref_id and 
+			o.object_type = (select object_type from "object" where OID = ref_id)
+	order by distancia_coseno asc
 	limit max_results;
 end;
 $$ language plpgsql;
