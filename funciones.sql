@@ -22,7 +22,7 @@ begin
 	return query
 	select l.name,count(distinct c.CID) filter(where c.state= 'activa'),count(e.EID),count(a.AID) filter (where a.severity= 'critica')
 	from "location" as l 
-	join "camera" as c on c.UID = l.UID
+	left join "camera" as c on c.UID = l.UID
 	left join "event" as e on e.CID = c.CID
 	left join alert as a on a.EID = e.EID
 	where l.zone_type = tipo_zona
