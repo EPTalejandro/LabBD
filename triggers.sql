@@ -7,7 +7,6 @@ RETURNS TRIGGER AS
 $$
 DECLARE
   e_zone VARCHAR(50);
-  e_obj VARCHAR(10);
 
   e_cam camera%ROWTYPE;
   e_ev "event"%ROWTYPE;
@@ -28,7 +27,7 @@ BEGIN
   FROM "location"
   WHERE e_cam.UID = UID;
   
-  IF e_zone = 'peatonal_restringida' AND e_obj = 'vehicle' THEN
+  IF e_zone = 'peatonal_restringida' AND NEW.object_type = 'vehicle' THEN
     INSERT INTO alert(
       AID,
       EID,
@@ -58,6 +57,12 @@ AFTER INSERT
 ON "object"
 FOR EACH ROW 
 EXECUTE FUNCTION verif_alerta_peatonal();
+
+-- trg_audit_camara: se dispara AFTER UPDATE en CAMARA. Si el campo estado cambia a
+-- inactiva, inserta un registro en una tabla AUDITORIA_CAMARA (que el equipo debe
+-- diseñar e incluir en el DDL) con el id de la cámara, la fecha del cambio y el estado anterior.
+
+
 
 
 
