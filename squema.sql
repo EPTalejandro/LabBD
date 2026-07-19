@@ -5,6 +5,7 @@ drop table if exists "event" cascade;
 drop table if exists alert cascade;
 drop table if exists "object" cascade;
 drop table if exists embedding cascade;
+drop table if exists cameraAudit cascade;
 
 create table "location"(
         UID UUID DEFAULT gen_random_uuid() PRIMARY KEY ,
@@ -48,6 +49,22 @@ COMMENT ON COLUMN camera.model IS 'Marca y/o modelo del hardware de la cámara.'
 COMMENT ON COLUMN camera.has_night_vision IS 'Indica si el dispositivo posee capacidades de visión nocturna.';
 COMMENT ON COLUMN camera.state IS 'Estado operativo actual de la cámara. Valores: activa, en_mantenimiento, inactiva.';
 
+create table cameraAudit(
+        AUDID UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        CID UUID not null, 
+        constraint fk_cameraAudit_camera foreign key (CID) references camera(CID),
+        changeTime timestamptz  not null DEFAULT current_timestamp, 
+        oldState varchar(20) not null check (oldState in ('activa', 'en_mantenimiento', 'inactiva'))
+);
+
+-- COMENTARIOS PARA LA TABLA "cameraAudit"
+
+COMMENT ON TABLE cameraAudit IS 'Registro de auditoría de cambios de estado en cámaras. Se popula automáticamente mediante el trigger trg_audit_camara cuando una cámara pasa a estado inactiva.';
+
+COMMENT ON COLUMN cameraAudit.AUDID IS 'Identificador único del registro de auditoría (PK).';
+COMMENT ON COLUMN cameraAudit.CID IS 'Referencia a la cámara cuyo estado cambió (FK hacia camera).';
+COMMENT ON COLUMN cameraAudit.changeTime IS 'Fecha y hora en que se detectó el cambio de estado.';
+COMMENT ON COLUMN cameraAudit.oldState IS 'Estado que tenía la cámara inmediatamente antes del cambio a inactiva.';
 
 create table "event"(
         EID UUID DEFAULT gen_random_uuid() PRIMARY KEY,
