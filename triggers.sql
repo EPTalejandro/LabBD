@@ -67,8 +67,37 @@ CREATE OR REPLACE FUNCTION verif_audit_camara()
 RETURNS TRIGGER AS
 $$
 
-DECLARE
-  IF NEW.state 
+BEGIN
+  
+  IF NEW."state" <> OLD."state" and NEW."state" =  'inactiva' THEN
+    INSERT INTO cameraAudit(
+      AUDID,
+      CID,
+      changeTime,
+      oldState
+    )
+    VALUES(
+      gen_random_uuid(),
+      NEW.CID,
+      NOW(),
+      OLD."state" 
+    );
+
+  END IF;
+
+  RETURN NEW;
+
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_audit_camara
+AFTER UPDATE
+ON "camera"
+FOR EACH ROW 
+EXECUTE FUNCTION verif_audit_camara();
+      
+  
 
 
 
