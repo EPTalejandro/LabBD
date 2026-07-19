@@ -5,6 +5,7 @@
 CREATE OR REPLACE FUNCTION verif_alerta_peatonal()
 RETURNS TRIGGER AS
 $$
+  
 DECLARE
   e_zone VARCHAR(50);
 
@@ -62,7 +63,12 @@ EXECUTE FUNCTION verif_alerta_peatonal();
 -- inactiva, inserta un registro en una tabla AUDITORIA_CAMARA (que el equipo debe
 -- diseñar e incluir en el DDL) con el id de la cámara, la fecha del cambio y el estado anterior.
 
+CREATE OR REPLACE FUNCTION verif_audit_camara()
+RETURNS TRIGGER AS
+$$
 
+DECLARE
+  IF NEW.state 
 
 
 
