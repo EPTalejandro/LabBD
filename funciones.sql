@@ -3,7 +3,7 @@ create or replace function get_camera_traffic(camara_id UUID, fecha_inicio DATE,
 returns table(total bigINT, hora numeric) AS $$
 BEGIN
 	return query
-	select count(*) as total,extract(hour from e.eTime) as hora
+	select count(e.EID) as total,extract(hour from e.eTime) as hora
 	from "event" as e
 	where e.CID = camara_id and e.eTime::date between fecha_inicio and fecha_fin
 	group by hora
@@ -12,7 +12,7 @@ end;
 $$ language plpgsql;
 
 
-select * from get_camera_traffic((select CID from camera as c where c.name= 'CAM-EST-S-01'), '2026-03-08', '2026-03-10');
+-- select * from get_camera_traffic((select CID from camera as c where c.name= 'CAM-EST-S-01'), '2026-03-08', '2026-04-21');
 
 --DROP FUNCTION get_zone_summary(character varying)
 
