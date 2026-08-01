@@ -1,18 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import PlainTextResponse
 import psycopg2 
 from tabulate import tabulate
 from datetime import date
+from pydantic import BaseModel
 
 app = FastAPI()
 
 config_db = {
        "dbname": "hola",
        "user": "postgres",
-       "password": "******",
+       "password": "Ballenita1.P",
        "host": "localhost",
        "port": 5432
 }
+
+class Ubicacion(BaseModel):
+    nombre: str
+    piso: str
+    tipo_zona: str 
+    latitude: float
+    longitud: float
 
 @app.get("/ubicaciones",response_class=PlainTextResponse)
 def mostrar():
@@ -30,6 +38,28 @@ def mostrar():
     conexion.close()
     
     return tabulate(ubicaciones,headers=headers)
+
+@app.post("/ubicaciones",response_class=PlainTextResponse)
+def crear(datos: Ubicacion):
+    try:
+        conexion = psycopg2.connect(**config_db)
+        with conexion:
+            with conexion.cursor() as cursor:
+                sql_ubicacion = """INSERT INTO "location" ("name", floor, zone_type, latitude, longitude) VALUES (%s, %s, %s, %s, %s) RETURNING UID;"""
+                parametros = (datos.nombre,datos.piso,datos.tipo_zona,datos.latitude,datos.longitud)
+                cursor.execute(sql_ubicacion,parametros)
+    except psycopg2.Error as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error en la base de datos: {error.pgerror or str(error)}")
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error inesperado: {str(error)}"
+        )
+    finally:
+        if conexion:
+            conexion.close()
 
 @app.get("/camaras",response_class=PlainTextResponse)
 def mostrar():
