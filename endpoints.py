@@ -29,7 +29,6 @@ def vector_a_literal(vector: List[float]) -> str:
 # Son para definir estructuras y poder validad los datos automáticamente
 
 class Ubicacion(BaseModel):
-    UID: UUID
     name: str
     floor: str
     zone_type: str
@@ -107,7 +106,7 @@ def crear_ubicacion(datos: Ubicacion):
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING uid, name, floor, zone_type, latitude, longitude;
                 """
-                parametros = (datos.UID, datos.name, datos.floor, datos.zone_type, datos.latitude, datos.longitude)
+                parametros = (datos.name, datos.floor, datos.zone_type, datos.latitude, datos.longitude)
                 cursor.execute(sql_code, parametros)
                 fila = cursor.fetchone()
         return fila
@@ -237,7 +236,7 @@ def crear_camara(datos: Camara):
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING cid, uid, name, model, has_night_vision, state;
                 """
-                parametros = (str(datos.uid), datos.name, datos.model, datos.has_night_vision, datos.state)
+                parametros = (str(datos.UID), datos.name, datos.model, datos.has_night_vision, datos.state)
                 cursor.execute(sql_code, parametros)
                 fila = cursor.fetchone()
         return fila
@@ -253,7 +252,7 @@ def crear_camara(datos: Camara):
 @app.put("/camaras/{id}")
 def actualizar_camara(id: UUID, datos: CamaraUpdate):
     campos = {
-        "UID": str(datos.uid) if datos.uid else None,
+        "UID": str(datos.UID) if datos.UID else None,
         "name": datos.name,
         "model": datos.model,
         "has_night_vision": datos.has_night_vision,
