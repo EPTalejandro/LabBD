@@ -6,15 +6,20 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from uuid import UUID
 
-app = FastAPI()
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 config_db = {
-       "dbname": "hola",
-       "user": "postgres",
-       "password": "Ballenita1.P",
-       "host": "localhost",
-       "port": 5432
+    "dbname":   os.getenv("DB_NAME", "hola"),
+    "user":     os.getenv("DB_USER", "postgres"),
+    "password": os.getenv("DB_PASSWORD"),
+    "host":     os.getenv("DB_HOST", "localhost"),
+    "port":     int(os.getenv("DB_PORT", 5432)),
 }
+
+app = FastAPI()
 
 # Conectar con la base de datos
 def get_conexion():
@@ -171,6 +176,10 @@ def eliminar_ubicacion(id: UUID):
                 if fila is None:
                     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ubicacion no encontrada")
         return {"detalle": "Ubicacion eliminada", "uid": fila[0]}
+    except psycopg2.errors.ForeignKeyViolation:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="La ubicacion tiene camaras asociadas y no puede eliminarse")
     except psycopg2.Error as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -356,8 +365,6 @@ def obtener_evento(id: UUID):
         if conexion:
             conexion.close()
 
-
-
 # Entregable 4B - Endpoints analiticos
 
 # Modificado
@@ -370,8 +377,8 @@ def resumen_zona(tipo: str):
         sql_code = """SELECT DISTINCT zone_type FROM "location" """
         cursor.execute(sql_code)
         tipos_validos = [fila[0] for fila in cursor.fetchall()]
+        cursor.close()
         if tipo not in tipos_validos:
-            cursor.close()
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"La zona '{tipo}' no existe")
 
         cursor = conexion.cursor(cursor_factory=RealDictCursor)
