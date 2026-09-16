@@ -2,7 +2,7 @@
 
 API RESTful desarrollada con FastAPI y PostgreSQL (con la extensión `pgvector`) para la gestión y analítica de un sistema de videovigilancia: ubicaciones, cámaras, eventos, alertas y búsqueda de objetos por similitud visual.
 
-Este README cubre cómo levantar el proyecto localmente y cómo probar cada grupo de endpoints. Para la explicación de la lógica interna y las decisiones de diseño, ver el informe (Entregable 4D).
+Este README cubre cómo levantar el proyecto localmente y cómo probar cada grupo de endpoints. 
 
 ## Requisitos previos
 
