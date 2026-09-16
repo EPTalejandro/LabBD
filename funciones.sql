@@ -32,7 +32,7 @@ $$ language plpgsql;
 
 
 
-create or replace function find_similar_objects(ref_id INT, threshold FLOAT, max_results INT)
+create or replace function find_similar_objects(ref_id UUID, threshold FLOAT, max_results INT)
 returns table(object_ID UUID, object_type varchar(10), distancia_coseno float8, camera_name varchar(20), tiempo timestamptz) as $$
 begin
 	return query
