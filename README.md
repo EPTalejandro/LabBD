@@ -8,7 +8,7 @@ Este README cubre cómo levantar el proyecto localmente y cómo probar cada grup
 
 - Python 3.10 o superior
 - PostgreSQL 14 o superior, con la extensión `pgvector` instalada
-- El esquema de la base de datos ya creado (tablas `location`, `camera`, `event`, `object`, `embedding`, `alert`) junto con las funciones PL/pgSQL de la Fase 3 (`get_zone_summary`, `get_camera_traffic`, `find_similar_objects`)
+- El esquema de la base de datos ya creado (tablas `location`, `camera`, `event`, `object`, `embedding`, `alert`) junto con las funciones PL/pgSQL (`get_zone_summary`, `get_camera_traffic`, `find_similar_objects`)
 
 ## Instalación
 
@@ -45,7 +45,7 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-**No subas el archivo `.env` al repositorio** — ya está (o debería estar) listado en `.gitignore`.
+**No subas el archivo `.env` al repositorio**, ya está (o debería estar) listado en `.gitignore`.
 
 ## Preparar la base de datos
 
@@ -84,7 +84,7 @@ Desde `/docs` puedes probar cualquier endpoint directamente desde el navegador s
 
 A continuación, ejemplos de uso con `curl` para cada grupo de endpoints. Sustituye los UUID de ejemplo por valores reales de tu base de datos.
 
-### Ubicaciones (4A)
+### Ubicaciones
 
 ```bash
 # Listar todas las ubicaciones
@@ -104,7 +104,7 @@ curl -X PUT http://localhost:8000/ubicaciones/<uid> \
 curl -X DELETE http://localhost:8000/ubicaciones/<uid>
 ```
 
-### Cámaras (4A)
+### Cámaras
 
 ```bash
 curl http://localhost:8000/camaras
@@ -119,7 +119,7 @@ curl -X PUT http://localhost:8000/camaras/<cid> \
   -d '{"state": "mantenimiento"}'
 ```
 
-### Eventos (4A)
+### Eventos
 
 ```bash
 curl http://localhost:8000/eventos
@@ -130,7 +130,7 @@ curl -X POST http://localhost:8000/eventos \
   -d '{"cid": "<cid-de-una-camara>", "conf_level": 0.87, "posx": 120, "posy": 340, "width": 80, "height": 200}'
 ```
 
-### Analítica (4B)
+### Analítica
 
 ```bash
 # Resumen por tipo de zona
@@ -143,7 +143,7 @@ curl "http://localhost:8000/analytics/cameras/<cid>/traffic?from=2026-08-01&to=2
 curl "http://localhost:8000/analytics/alerts/summary?days=15"
 ```
 
-### Búsqueda por similitud visual (4C)
+### Búsqueda por similitud visual
 
 ```bash
 # Objetos similares a un objeto ya registrado
@@ -163,7 +163,7 @@ El vector del ejemplo anterior debe tener exactamente 512 valores; la API rechaz
 .
 ├── endpoints.py        # Endpoints de la API (FastAPI)
 ├── squema.sql          # Esquema de la base de datos
-├── funciones.sql       # Funciones PL/pgSQL (Fase 3)
+├── funciones.sql       # Funciones PL/pgSQL 
 ├── triggers.sql        # Triggers de la base de datos
 ├── consulta.sql        # Consultas de referencia / verificación
 ├── seed_100.csv        # Datos de ejemplo
