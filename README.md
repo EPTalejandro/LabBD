@@ -45,8 +45,6 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-**No subas el archivo `.env` al repositorio**, ya está (o debería estar) listado en `.gitignore`.
-
 ## Preparar la base de datos
 
 Antes de levantar la API, asegúrate de que la extensión `pgvector` esté habilitada en tu base:
