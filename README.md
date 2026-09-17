@@ -2,7 +2,7 @@
 
 API RESTful desarrollada con FastAPI y PostgreSQL (con la extensión `pgvector`) para la gestión y analítica de un sistema de videovigilancia: ubicaciones, cámaras, eventos, alertas y búsqueda de objetos por similitud visual.
 
-Este README cubre cómo levantar el proyecto localmente y cómo probar cada grupo de endpoints. Para la explicación de la lógica interna y las decisiones de diseño, ver el informe (Entregable 4D).
+Este README cubre cómo levantar el proyecto localmente y cómo probar cada grupo de endpoints. 
 
 ## Requisitos previos
 
@@ -80,7 +80,7 @@ Desde `/docs` puedes probar cualquier endpoint directamente desde el navegador s
 
 A continuación, ejemplos de uso con `curl` para cada grupo de endpoints. Sustituye los UUID de ejemplo por valores reales de tu base de datos.
 
-### Ubicaciones (4A)
+### Ubicaciones
 
 ```bash
 # Listar todas las ubicaciones
@@ -100,7 +100,7 @@ curl -X PUT http://localhost:8000/ubicaciones/<uid> \
 curl -X DELETE http://localhost:8000/ubicaciones/<uid>
 ```
 
-### Cámaras (4A)
+### Cámaras 
 
 ```bash
 curl http://localhost:8000/camaras
@@ -115,7 +115,7 @@ curl -X PUT http://localhost:8000/camaras/<cid> \
   -d '{"state": "mantenimiento"}'
 ```
 
-### Eventos (4A)
+### Eventos
 
 ```bash
 curl http://localhost:8000/eventos
@@ -126,7 +126,7 @@ curl -X POST http://localhost:8000/eventos \
   -d '{"cid": "<cid-de-una-camara>", "conf_level": 0.87, "posx": 120, "posy": 340, "width": 80, "height": 200}'
 ```
 
-### Analítica (4B)
+### Analítica
 
 ```bash
 # Resumen por tipo de zona
@@ -139,7 +139,7 @@ curl "http://localhost:8000/analytics/cameras/<cid>/traffic?from=2026-08-01&to=2
 curl "http://localhost:8000/analytics/alerts/summary?days=15"
 ```
 
-### Búsqueda por similitud visual (4C)
+### Búsqueda por similitud visual 
 
 ```bash
 # Objetos similares a un objeto ya registrado
