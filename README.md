@@ -169,8 +169,6 @@ El vector del ejemplo anterior debe tener exactamente 512 valores; la API rechaz
 ├── seed_100.csv        # Datos de ejemplo
 ├── seeds.py            # Script para cargar los datos de ejemplo
 ├── requirements.txt    # Dependencias
-├── .env.example        # Plantilla de variables de entorno
-├── .env                # Configuración local (no versionado)
 └── README.md
 ```
 
