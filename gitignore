@@ -1,0 +1,12 @@
+# Variables de entorno (contiene la contraseña real de la base de datos)
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Editor / OS
+.vscode/
+.DS_Store
